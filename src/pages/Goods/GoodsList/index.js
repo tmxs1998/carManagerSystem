@@ -135,7 +135,7 @@ class Goods extends Component{
            }}>DOM导出表格</Button>
           <Button type='primary' onClick={this.exportAll}>导出全部</Button>
           <Spin spinning = {spinning}>
-            <Table pagination={false} style={{marginTop:'20px'}} bordered scroll={{x:1300}} dataSource={list} columns={columns} rowKey='_id'></Table>
+            <Table pagination={false} style={{marginTop:'20px'}} bordered scroll={{x:1300, y: 300}} dataSource={list} columns={columns} rowKey='_id'></Table>
           </Spin>
           <Pagination style={{margin:'10px 0'}} pageSize={pageSize} total={count} current={page} showQuickJumper onChange={(page,pageSize)=>{
             this.setState({page},()=>{
