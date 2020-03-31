@@ -2,15 +2,25 @@ import React,{Component} from 'react';
 import {BrowserRouter,Route,Redirect,Switch} from 'react-router-dom'
 import LoadAble from './utils/loadable'
 
-import Home from '@pages/Home/index'
-import GoodsList from './pages/Goods/GoodsList/index'
-import GoodsAdd from './pages/Goods/GoodsAdd/index'
-import GoodsInfoUpdate from  './pages/Goods/GoodsUpdate'
-import KindList from  './pages/GoodsKind/kindList'
-import Manager from './pages/Manager/index'
-import KindUpdate from '@pages/GoodsKind/KindUpdate/index'
+//主页
+const Home = LoadAble(()=>import('@pages/Home/index'))
+//权限模态框
+const TokenModal = LoadAble(()=>import('./components/TokenModal/index'))
 
-import TokenModal from './components/TokenModal/index'
+//商品相关
+const GoodsList = LoadAble(()=>import('@pages/Goods/GoodsList/index'))
+const GoodsAdd = LoadAble(()=>import('@pages/Goods/GoodsAdd/index'))
+const GoodsInfoUpdate = LoadAble(()=>import('@pages/Goods/GoodsUpdate'))
+
+//类别相关
+const KindList = LoadAble(()=>import('@pages/GoodsKind/kindList'))
+const KindUpdate = LoadAble(()=>import('@pages/GoodsKind/KindUpdate/index'))
+
+//管理员
+const Manager = LoadAble(()=>import('@pages/Manager/index'))
+
+//轮播图
+const Banner = LoadAble(()=>import('@pages/Banner/index'))
 
 const Login = LoadAble(()=>import('@pages/Login/index'))
 const Admin = LoadAble(()=>import('@pages/Admin/index'))
@@ -34,6 +44,7 @@ class App extends Component{
                   <Route path='/admin/goodskind' component={KindList}></Route>
                   <Route path='/admin/kindupdate' component={KindUpdate}></Route>
                   <Route path='/admin/manager' component={Manager}></Route>
+                  <Route path='/admin/banner' component={Banner}></Route>
               </Admin>
             )
           }}></Route>
