@@ -102,11 +102,11 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
     proxy:{
-      '/mall':{
-        target:'http://116.62.11.16:3001/',
+      '/mail':{
+        target:'http://116.62.11.16:3001',
         changeOrigin:true,
         pathRewrite:{
-          "^/mall":''
+          "^/mail":''
         }
       }
     },

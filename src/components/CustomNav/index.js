@@ -1,46 +1,55 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import { Menu } from 'antd'
-import menuList from './menulist'
-const { SubMenu } = Menu
+import React, { Component } from 'react';
+import { Menu ,Icon} from 'antd';
+import {withRouter} from 'react-router-dom'
+import menuList from './menuList'
 
-function handleClick(e) {
-    // 点击获取跳转路径通过编程式导航实现跳转
-    let { path } = e.item.props 
+const { SubMenu } = Menu;
+
+class CustomNav extends Component {
+  handleClick = e => {
+    console.log('click ', e);
+    let {path} = e.item.props;
     this.props.history.replace(path)
   }
-  class CustomNav extends Component {
-    renderItem(data){
-      return data.map((item, index)=>{
-        if(item.children){
-          return(
-            <SubMenu key={item.key} title={(()=>{
-              return(
-                <span>
-                  {item.title}
-                </span>
-              )
-            })()}>
-              {/* 如果里面还有2级 将渲染的方法在调用一遍 */}
-              {this.renderItem(item.children)}
-            </SubMenu>
-          )
-        }else{
-          return(
-          <Menu.Item key={item.key} path={item.path}>
-            {item.title}
-          </Menu.Item>
-          )
-        }
-      })
-    }
-    render(){
-      return(
-      <Menu onClick={handleClick.bind(this)} style={{ width: 200 }} mode="vertical" theme='dark'>
+  renderItem(data){
+    return data.map((item,index)=>{
+      if(item.children){
+        return(
+          <SubMenu
+            key={item.key}
+            title={
+              <span>
+                <Icon type={item.icon} />
+                <span>{item.title}</span>
+              </span>
+            }
+          >
+            {this.renderItem(item.children)}
+          </SubMenu>
+        )
+      }else{
+        return (
+        <Menu.Item key={item.key} path={item.path}>
+          <Icon type={item.icon} />
+          {item.title}
+        </Menu.Item>)
+      }
+    })
+  }
+  render(){
+    return(
+      <Menu
+        onClick={this.handleClick}
+        style={{ width: 200 }}
+        defaultSelectedKeys={['1']}
+        defaultOpenKeys={['sub1']}
+        mode="inline" 
+        theme='dark'
+      >
         {this.renderItem(menuList)}
       </Menu>
-      )
-    }
+    )
   }
-   
-  export default withRouter(CustomNav);
+}
+ 
+export default withRouter(CustomNav);

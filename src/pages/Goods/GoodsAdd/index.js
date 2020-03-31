@@ -20,7 +20,7 @@ class GoodsAdd extends Component {
     'types':[]
   }
   async componentDidMount(){
-    let {code, list} = await goodsApi.kindList()
+    let {list} = await goodsApi.kindList()
     this.setState({types:list,kind:list[0]})
   }
   upload =async()=>{
@@ -58,7 +58,7 @@ class GoodsAdd extends Component {
     this.props.history.replace('/admin/goodsInfo')
   }
   render() { 
-    let {types, name, desc, path, link, kind, stock, putaway, price, unit} = this.state
+    let {types, name,desc,path,link,stock,price,unit} = this.state
     return ( 
       <div className={style.box}>
          <Card title='商品添加'>
@@ -82,6 +82,12 @@ class GoodsAdd extends Component {
             <Input addonBefore="库存" value={stock} type='number' onChange={(e)=>{
               if(e.target.value<0){e.target.value = 0}
               this.setState({stock:e.target.value})
+            }} />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <Input addonBefore="单位" value={unit} onChange={(e)=>{
+              if(e.target.value<0){e.target.value = 0}
+              this.setState({unit:e.target.value})
             }} />
           </div>
           <div style={{ marginBottom: 16 }}>
@@ -137,10 +143,3 @@ class GoodsAdd extends Component {
 }
  
 export default GoodsAdd;
-/*
-商品添加
-1.用户输入信息
-2.获取用户输入的信息
-3.调用添加接口
-4.添加成功后 可以在页面不动 也可以跳转回列表页
-*/ 

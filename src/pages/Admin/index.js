@@ -1,32 +1,32 @@
 import React, { Component } from 'react';
 import CustomNav from '../../components/CustomNav'
-import HeaderNav from '../../components/HeaderNav'
-import { Layout } from 'antd'
+import { Layout } from 'antd';
 import style from './index.module.less'
-const { Header, Content, Footer, Sider } = Layout
-class Admin extends Component {
-  state = {}
-  render() {
-    return (
-      <Layout className={ style.wrapper }>
-        {/* 侧边栏 */}
-        <Sider>
-          <div className="logo" />
-          <CustomNav></CustomNav>
-        </Sider>
+import HeaderNav from '../../components/HeaderNav/index'
 
-        <Layout >
-          <Header style={{ background: '#fff' }}>
-            <HeaderNav></HeaderNav>
-          </Header>
-          <Content >
-            {this.props.children}
-          </Content>
-          <Footer >Ant Design ©2018 Created by Ant UED</Footer>
-        </Layout>
+const { Header, Content, Sider ,Footer} = Layout;
+class Admin extends Component {
+  render() { 
+    return ( 
+      <Layout className={style.wrapper}>
+        {/* 侧边栏 */}
+      <Sider>
+        <div className="logo" />
+        <CustomNav></CustomNav>
+      </Sider>
+     
+      <Layout >
+        <Header style={ {background:'#FFF'} }>
+          <HeaderNav></HeaderNav>
+        </Header>
+        <Content >
+          {this.props.children}
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>get by 2020 hhhhhhh group</Footer>
       </Layout>
-    )
+    </Layout>
+     );
   }
 }
-
-export default Admin
+ 
+export default Admin;

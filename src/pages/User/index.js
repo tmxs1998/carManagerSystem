@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
+import React,{Component} from 'react';
 
-class User extends Component {
-  render () {
+class User extends Component{
+  render(){
     return (
-      <div>
-        这里是User
-      </div>
+      <div>user page</div>
     )
   }
 }
 
-export default User
+export default User;
