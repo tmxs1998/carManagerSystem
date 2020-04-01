@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import style from './index.moudle.less'
+import style from './index.module.less'
 import {message, Popconfirm, Spin, Button,Modal, Card,Table,notification,Input} from 'antd'
 import api from '../../api/admin'
 
@@ -95,10 +95,10 @@ class Manager extends Component{
     let {dataSource,spinning,columns} =this.state
     return (
       <div className={style.manager}>
-          <Card title='管理员列表'>
+          <Card title='管理员列表' className={style.card}>
           <Button type='primary' onClick={this.showModal}>添加</Button>
             <Spin spinning={spinning}>
-             <Table pagination={false} dataSource={dataSource} columns={columns} rowKey='_id'></Table>
+             <Table pagination={false} dataSource={dataSource} columns={columns} rowKey='_id' scroll={{ y: 200 }}></Table>
             </Spin>
           </Card>
           {/* 模态框 */}
