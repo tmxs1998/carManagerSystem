@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu ,Icon} from 'antd';
 import {withRouter} from 'react-router-dom'
-import menuList from './menuList'
+import menuList from './menulist'
 
 const { SubMenu } = Menu;
 
