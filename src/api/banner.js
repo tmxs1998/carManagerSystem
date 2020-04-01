@@ -6,8 +6,9 @@ class Banner {
         let url = '/mail/banner'
         return axios.get(url,{params:{page,pageSize}})
     }
-    update(){
-
+    update(_id,payload){
+        let url = '/mail/banner/'+_id
+        return axios.put(url,payload)
     }
     add(payload){
         let url = '/mail/banner'
@@ -16,6 +17,10 @@ class Banner {
     del(_id){
         let url = '/mail/banner/'+_id
         return axios.delete(url)
+    }
+    publish(_id,state){
+        let url = '/mail/banner/'+_id+'/publish'
+        return axios.put(url,{publish:state})
     }
 }
 

@@ -1,15 +1,20 @@
 import React,{Component} from 'react';
-import { Table, Card, message, Button,Popconfirm,Spin,Modal,Input} from 'antd'
+import { Table, Card, message, Button,Popconfirm,Spin,Modal,Input,Tag} from 'antd'
 import bannerApi from '../../api/banner'
 import style from './index.module.less'
 import XLSX from 'xlsx'
 import config from '../../config/index'
 import uploadApi from '../../api/upload'
 
+let colorObj = {'0':{color:'yellow',msg:'未发布'},'1':{color:'green',msg:'已发布'}}
+let publish = 0
+let uid = ''
+
 class Banner extends Component{
   state = {
     spinning:false,
     visible:false,
+    updateVis:false,
     page:1,
     pageSize:2,
     list:[],
@@ -23,19 +28,34 @@ class Banner extends Component{
       {title:'图片',key:'path',dataIndex:'path',width:120,render(recode){
           return(<img src={recode} alt='轮播图' />)
       }},
-      {title:'操作',key:'action',width:120,render:(recode)=>{
+      {title:'发布状态',key:'publish',dataIndex:'publish',width:120,render(state){
+        return(<Tag color={colorObj[state].color}>{colorObj[state].msg}</Tag>)
+      }},
+      {title:'操作',key:'action',width:100,render:(recode)=>{
         return(
           <div>
             <Popconfirm title='确定要删除吗?' onConfirm={()=>{
                 this.del(recode._id)
             }} >
-              <Button type='danger' style={{margin:'10px'}} size='small'>删除</Button>
+              <Button type='danger' size='small'>删除</Button>
             </Popconfirm>
-            
             <Popconfirm title='确定要修改吗?' onConfirm={()=>{
-              
+              if(recode.publish){
+                this.publish(recode._id,0)
+              }else{
+                this.publish(recode._id,1)
+              }
             }} >
-              <Button type='primary' size='small'>修改</Button>
+              <Button type='default' size='small' style={{margin:'10px 0'}}>发布</Button>
+            </Popconfirm>
+            <Popconfirm title='确定要修改吗?' onConfirm={()=>{
+              this.props.history.replace('/admin/banner/'+recode._id)
+              publish = recode.publish
+              uid = recode._id
+              this.setState({updateVis:true})
+              this.upData(recode)
+            }} >
+              <Button type='primary' size='small' >修改</Button>
             </Popconfirm>
           </div>
         )
@@ -45,11 +65,23 @@ class Banner extends Component{
   componentDidMount(){
     this.getListData()
   }
-  
+  publish= async(id,state)=>{
+    let result = await bannerApi.publish(id,state)
+    if(result.code){
+      message.error(result.msg)
+    }else{
+      message.success('修改成功！')
+      this.getListData()
+    }
+  }
   upload =async()=>{
     //获取图片里的内容
-    
-    let file = this.refs.img.files[0]
+    let file = null
+    if(this.refs.img){
+      file = this.refs.img.files[0]
+    }else{
+      file = this.refs.fimg.files[0]
+    }
     if(!file){return message.error('请先选择一张图片！')}
     //console.log(file)
     let {size,type} = file
@@ -136,8 +168,38 @@ class Banner extends Component{
   handleCancel =()=>{
     this.setState({visible:false})
   }
+
+  upOk = async()=>{
+    if(!this.state.path){return message.info('请先上传图片！')}
+    let name = this.refs.uname.input.value
+    let link = this.refs.ulink.input.value
+    let desc = this.refs.udesc.input.value
+    let img = config.serverIp+this.state.path
+    let {code,msg}  = await bannerApi.update(uid,{name,link,publish,desc,path:img})
+    if(code){ return message.error(msg)}
+    this.getListData()
+    this.setState({updateVis:false})
+    this.props.history.replace('/admin/banner')
+    return message.success('修改成功！')
+  }
+
+  upData = (data)=>{
+    //console.log(data)
+    setTimeout(()=>{
+      console.log(this.refs.uname)
+      this.refs.uname.input.value = data.name
+      this.refs.ulink.input.value = data.link
+      this.refs.udesc.input.value = data.desc
+      this.refs.uimg.src = data.path
+    },200)
+  }
+
+  upCancel = ()=>{
+    this.setState({updateVis:false})
+  }
+
   render(){
-    let {list,columns,spinning,visible,path} = this.state
+    let {list,columns,spinning,visible,path,updateVis} = this.state
     return (
       <div className={style.box}>
         <Card title='广告列表' className={style.card}>
@@ -161,6 +223,28 @@ class Banner extends Component{
                 <button onClick={this.upload}>上传图片</button><br/>
                 <img width='120' height='80' src={config.serverIp+path} alt=""/><br />
             </Modal>
+            
+            <Modal
+                    title="修改"
+                    visible={updateVis}
+                    onOk={this.upOk}
+                    onCancel={this.upCancel}
+                >
+                <div style={{ marginBottom: 16 ,width:'300px'}}>
+                    <Input addonBefore="名称" ref='uname' />
+                </div>
+                <div style={{ marginBottom: 16 ,width:'300px'}}>
+                    <Input addonBefore="链接" ref='ulink' />
+                </div>
+                <div style={{ marginBottom: 16 ,width:'300px'}}>
+                    <Input addonBefore="描述" ref='udesc' />
+                </div>
+                <input type="file" ref='fimg'/>
+                <button onClick={this.upload}>上传图片</button><br/>
+                <img width='120' height='80' src={config.serverIp+path} ref='uimg' alt=""/><br />
+            </Modal>
+
+
           <Button type='primary' style={{margin:'0 10px'}} onClick={()=>{
              let thead = document.getElementsByTagName('thead')[0]
              let table = document.getElementsByTagName('table')[1]
