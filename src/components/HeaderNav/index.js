@@ -60,7 +60,7 @@ class HeaderNav extends Component {
     if(!user){
       user = '未登录,去登录'
       document.getElementById('user').onclick = ()=>{
-        window.location.href = '/login'
+        window.location.href = '/#/login'
       }
     }
     document.getElementById('user').innerText = user

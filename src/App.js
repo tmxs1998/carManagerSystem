@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {BrowserRouter,Route,Redirect,Switch} from 'react-router-dom'
+import {HashRouter,Route,Redirect,Switch} from 'react-router-dom'
 import LoadAble from './utils/loadable'
 
 //主页
@@ -29,7 +29,7 @@ const Admin = LoadAble(()=>import('@pages/Admin/index'))
 class App extends Component{
   render(){
     return (
-      <BrowserRouter>
+      <HashRouter>
         
         <TokenModal></TokenModal>
         <Switch>
@@ -50,7 +50,7 @@ class App extends Component{
           }}></Route>
           <Redirect exact from='/' to='/admin/home'></Redirect>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 }

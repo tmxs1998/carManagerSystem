@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Table, Card, message, Button,Popconfirm,Spin,Modal,Input,Tag} from 'antd'
+import { Table, Card, message, Button,Popconfirm,Spin,Modal,Input,Tag,Pagination} from 'antd'
 import bannerApi from '../../api/banner'
 import style from './index.module.less'
 import XLSX from 'xlsx'
@@ -118,7 +118,7 @@ class Banner extends Component{
     let {page,pageSize} = this.state
     this.setState({spinning:true})
     let result = await bannerApi.list(page,pageSize)
-    this.setState({spinning:false})
+    this.setState({spinning:false,count:result.count})
     //console.log(result)
     let {code,msg,list} = result
     if(code !== 0){
@@ -199,7 +199,7 @@ class Banner extends Component{
   }
 
   render(){
-    let {list,columns,spinning,visible,path,updateVis} = this.state
+    let {list,columns,spinning,visible,path,updateVis,page,pageSize,count} = this.state
     return (
       <div className={style.box}>
         <Card title='广告列表' className={style.card}>
@@ -258,6 +258,11 @@ class Banner extends Component{
           <Spin spinning = {spinning}>
             <Table pagination={false} style={{marginTop:'20px'}} bordered  scroll={{y:300}} dataSource={list} columns={columns} rowKey='_id'></Table>
           </Spin>
+          <Pagination style={{margin:'10px 0'}} pageSize={pageSize} total={count} current={page} showQuickJumper onChange={(page,pageSize)=>{
+            this.setState({page},()=>{
+              this.getListData()
+            })
+          }}></Pagination>
         </Card>
       </div>
     )

@@ -53,7 +53,7 @@ class Login extends Component {
             {min:3,message:'用户名最小长度3位'},
             {max:9,message:'用户名最大长度9位'}]
           })(
-            <Input
+            <Input type='password'
             prefix={<Icon type="eye-invisible" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="PassWord"
             />
