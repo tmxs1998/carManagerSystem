@@ -16,22 +16,22 @@ class Banner extends Component{
     visible:false,
     updateVis:false,
     page:1,
-    pageSize:2,
+    pageSize:50,
     list:[],
     path:'',
     count:0,
     columns:[
-      {title:'id',key:'_id',dataIndex:'_id',width:120},
-      {title:'名称',key:'name',dataIndex:'name',width:120},
-      {title:'链接',key:'link',dataIndex:'link',width:120},
-      {title:'描述',key:'desc',dataIndex:'desc',width:120},
-      {title:'图片',key:'path',dataIndex:'path',width:120,render(recode){
+      {title:'id',key:'_id',dataIndex:'_id',width:220,fixed:'left'},
+      {title:'名称',key:'name',dataIndex:'name',width:150},
+      {title:'链接',key:'link',dataIndex:'link',width:150},
+      {title:'描述',key:'desc',dataIndex:'desc'},
+      {title:'图片',key:'path',dataIndex:'path',width:150,render(recode){
           return(<img src={recode} alt='轮播图' />)
       }},
       {title:'发布状态',key:'publish',dataIndex:'publish',width:120,render(state){
         return(<Tag color={colorObj[state].color}>{colorObj[state].msg}</Tag>)
       }},
-      {title:'操作',key:'action',width:100,render:(recode)=>{
+      {title:'操作',key:'action',width:100,fixed:'right',render:(recode)=>{
         return(
           <div>
             <Popconfirm title='确定要删除吗?' onConfirm={()=>{
@@ -256,7 +256,7 @@ class Banner extends Component{
            }}>DOM导出表格</Button>
           <Button type='primary' onClick={this.exportAll}>导出全部</Button>
           <Spin spinning = {spinning}>
-            <Table pagination={false} style={{marginTop:'20px'}} bordered  scroll={{y:300}} dataSource={list} columns={columns} rowKey='_id'></Table>
+            <Table pagination={false} style={{marginTop:'20px'}} bordered  scroll={{x: 1300, y:300}} dataSource={list} columns={columns} rowKey='_id'></Table>
           </Spin>
         </Card>
       </div>
