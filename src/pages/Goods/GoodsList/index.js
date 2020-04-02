@@ -5,6 +5,10 @@ import style from './index.module.less'
 import XLSX from 'xlsx'
 
 let rootPath = 'http://116.62.11.16:3001'
+function showTotal(total) {
+  return `Total ${total} items`;
+}
+
 class Goods extends Component{
   state = {
     spinning:false,
@@ -32,7 +36,7 @@ class Goods extends Component{
         }
         return(<img width ='150' height='80'src={result} alt='缩略图'/>)
       },width:150},
-      {title:'描述',key:'desc',dataIndex:'desc',width:200},
+      {title:'描述',key:'desc',dataIndex:'desc'},
       {title:'单位',key:'unit',dataIndex:'unit',width:80},
       {title: '状态',dataIndex: 'putaway',key: 'putaway',render(putaway){
         if(putaway == null){putaway = 0}
@@ -135,9 +139,13 @@ class Goods extends Component{
            }}>DOM导出表格</Button>
           <Button type='primary' onClick={this.exportAll}>导出全部</Button>
           <Spin spinning = {spinning}>
-            <Table pagination={false} style={{marginTop:'20px'}} bordered scroll={{x:840}} dataSource={list} columns={columns} rowKey='_id'></Table>
+            <Table pagination={false} style={{marginTop:'20px'}} bordered scroll={{x: 1300, y: 300}} dataSource={list} columns={columns} rowKey='_id'></Table>
           </Spin>
-          <Pagination style={{margin:'10px 0'}} pageSize={pageSize} total={count} current={page} showQuickJumper onChange={(page,pageSize)=>{
+          <Pagination style={{margin:'10px 0'}} pageSize={pageSize} total={count} current={page} showQuickJumper
+          showSizeChanger pageSizeOptions = {['2', '4', '6', '8', '10']} showTotal={showTotal} onShowSizeChange = {(current, pageSize)=>{
+            this.setState({pageSize: pageSize},()=>{
+            this.getListData()
+          })}} onChange={(page,pageSize)=>{
             this.setState({page},()=>{
               this.getListData()
             })

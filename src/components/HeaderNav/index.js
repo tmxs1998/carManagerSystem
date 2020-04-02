@@ -23,36 +23,13 @@ const menu = (
       </a>
     </Menu.Item>
     <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href onClick={logout}>
+      <a target="_blank" rel="noopener noreferrer" href="javascript():;" onClick={logout}>
       <Icon type='logout' />
         退出登录
       </a>
     </Menu.Item>
   </Menu>
 );
-
-
-
-// let data = [
-//     {name:'个人中心',icon:'user',divider:false},
-//     {name:'个人设置',icon:'setting',divider:true},
-//     {name:'退出登录',icon:'logout',divider:false}
-// ]
-
-// function createMenu(data){
-//     return (
-//         data.map((item,index)=>{
-//             return (
-//                 <Menu.Item>
-//                     <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-//                     <Icon type={item.icon} />
-//                         {item.name}
-//                     </a>
-//                 </Menu.Item>
-//             )
-//         })
-//     )
-// }
 
 class HeaderNav extends Component {
   componentDidMount(){
@@ -72,7 +49,7 @@ class HeaderNav extends Component {
         汽车管理系统
         <div style={{float:"right",margin:'0 10px'}}>
           <Dropdown overlay={menu}>
-            <a className="ant-dropdown-link" href onClick={e => e.preventDefault()}>
+            <a className="ant-dropdown-link" href="javascript():;" onClick={e => e.preventDefault()}>
               用户设置<Icon type="down" />
             </a>
           </Dropdown>

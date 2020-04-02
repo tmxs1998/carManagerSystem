@@ -9,6 +9,9 @@ import uploadApi from '../../api/upload'
 let colorObj = {'0':{color:'yellow',msg:'未发布'},'1':{color:'green',msg:'已发布'}}
 let publish = 0
 let uid = ''
+function showTotal(total) {
+  return `Total ${total} items`;
+}
 
 class Banner extends Component{
   state = {
@@ -21,11 +24,11 @@ class Banner extends Component{
     path:'',
     count:0,
     columns:[
-      {title:'id',key:'_id',dataIndex:'_id',width:120},
-      {title:'名称',key:'name',dataIndex:'name',width:120},
-      {title:'链接',key:'link',dataIndex:'link',width:120},
-      {title:'描述',key:'desc',dataIndex:'desc',width:120},
-      {title:'图片',key:'path',dataIndex:'path',width:120,render(recode){
+      {title:'id',key:'_id',dataIndex:'_id',width:200},
+      {title:'名称',key:'name',dataIndex:'name',width:150},
+      {title:'链接',key:'link',dataIndex:'link',width:150},
+      {title:'描述',key:'desc',dataIndex:'desc'},
+      {title:'图片',key:'path',dataIndex:'path',width:150,render(recode){
           return(<img src={recode} alt='轮播图' />)
       }},
       {title:'发布状态',key:'publish',dataIndex:'publish',width:120,render(state){
@@ -198,6 +201,8 @@ class Banner extends Component{
     this.setState({updateVis:false})
   }
 
+
+
   render(){
     let {list,columns,spinning,visible,path,updateVis,page,pageSize,count} = this.state
     return (
@@ -256,13 +261,18 @@ class Banner extends Component{
            }}>DOM导出表格</Button>
           <Button type='primary' onClick={this.exportAll}>导出全部</Button>
           <Spin spinning = {spinning}>
-            <Table pagination={false} style={{marginTop:'20px'}} bordered  scroll={{y:300}} dataSource={list} columns={columns} rowKey='_id'></Table>
+            <Table pagination={false} style={{marginTop:'20px'}} bordered  scroll={{x: 1300, y:300}} dataSource={list} columns={columns} rowKey='_id'></Table>
           </Spin>
-          <Pagination style={{margin:'10px 0'}} pageSize={pageSize} total={count} current={page} showQuickJumper onChange={(page,pageSize)=>{
+          <Pagination style={{margin:'10px 0'}} pageSize={pageSize} total={count} current={page} showQuickJumper 
+          showSizeChanger pageSizeOptions = {['2', '4', '6', '8', '10']} showTotal={showTotal} onShowSizeChange = {(current, pageSize)=>{
+            this.setState({pageSize: pageSize},()=>{
+            this.getListData()
+          })}}  onChange={(page,pageSize)=>{
             this.setState({page},()=>{
               this.getListData()
             })
           }}></Pagination>
+
         </Card>
       </div>
     )
